@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<!-- Adding some style to table (OPTIONAL) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto%7CVarela+Round%7COpen+Sans">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+
+    th:tr{
+        color: blue;
+
+    }
+    tr:nth-of-type(2n){
+        border: 1px solid black;
+        background-color: rgba(150, 150, 150, 0.5);
+
+    }
+
+    td{
+        padding: 8px 8px;
+        border: 1px solid black;
+    }
+</style>
+
+</head>
+<body>
+
+    <h1>Enter the product name </h1>
+    <form method="post" action="/">
+        <input type="text" name="name" placeholder="Your Name" pattern="[a-zA-Z].{2,}" title="Up to 3 characters" required>
+        <input type="submit" value="Search">
+    </form>
+
+    <!-- flash message generated -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+       <b>  <h3>{{ message }}</h3> </b>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+
+
+<br><br><br><br><br>
+<!-- display after search -->
+{% if all_data  %}
+<h2>List of product which you have to search</h2>  <br>
+
+{{scrape_time}}
+<table style="margin-left: 20px;">
+        <th>
+            <tr style="color: yellow; ">
+                <th>Name</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Result search</th>
+    </tr>
+        </th>
+
+{%for i in all_data%}
+<tr>
+    <td>{{i['product_title']}}</td>
+    <td> <img src="{{i['product_image']}}" alt="image" width="60%" height="120px"></td>
+    <td>{{i['price']}}</td>
+    <td>{{i['keyword']}}</td>
+{%endfor%}
+</tr>
+</table>
+{% endif %}
+
+<br><br><br><br><br><br>
+<!-- detail of product -->
+
+{% if all_data_detail %}
+<h2>Detail of all product </h2>   <br>
+{{detail_time}}
+<table style="margin-left: 20px;">
+    <th>
+        <tr style="color: yellow; ">
+            <th>Name</th>
+            <th>Price</th>
+            <th>Images</th>
+            <th>Stock Status</th>
+            <th>Description</th>
+            <th>Search Result</th>
+</tr>
+    </th>
+{%for k in all_data_detail%}
+<tr>
+<td>{{k['product_title']}}</td>
+
+<td>{{k['price']}}</td>
+
+<td>
+{%for j in k['product_image']%}
+ <img src="{{j}}" alt="image" alt="image" width="80%" height="120px">
+ <!-- {{j}} -->
+{%endfor%}
+</td>
+
+<td>{{k['stock_status']}}</td>
+
+<td>
+{%for j in k['description']%}
+    <li>{{j}}</li>
+{%endfor%}
+</td>
+<td>{{k['brand']}}</td>
+{%endfor%}
+
+</tr>
+</table>
+
+
+{% endif %}
+
+
+
+</body>
+</html>
